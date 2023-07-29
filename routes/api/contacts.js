@@ -43,7 +43,7 @@ router.post("/", async (req, res, next) => {
   try {
     const { error } = addSchema.validate(req.body);
     if (error) {
-      throw HttpError(400, "Missing required name field");
+      throw HttpError(400, "Missing required field");
     }
     const result = await addContact(req.body);
     res.status(201).json(result);
