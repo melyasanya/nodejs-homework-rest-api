@@ -3,9 +3,13 @@ const Contact = require("../models/contact");
 
 const getAll = async (req, res) => {
   const { _id: owner } = req.user;
-  const { page = 1, limit = 10 } = req.query;
+  const { page = 1, limit = 10, favorite } = req.query;
   const skip = (page - 1) * 10;
-  const result = await Contact.find({ owner }, "", { skip, limit });
+  const result = await Contact.find(
+    favorite ? { owner, favorite } : { owner },
+    "",
+    { skip, limit }
+  ).populate("owner", "name email");
   res.json(result);
 };
 
