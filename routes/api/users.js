@@ -6,10 +6,12 @@ const {
   logout,
   updateSubscription,
   updateAvatar,
+  verifyEmail,
+  resendVerifyEmail,
 } = require("../../controllers/users");
 const { ctrlWrapper } = require("../../helpers");
 const { validateBody, authenticate, upload } = require("../../middlewares");
-const { loginAndRegisterSchema } = require("../../models/user");
+const { loginAndRegisterSchema, verifySchema } = require("../../models/user");
 const subscriptionSchema = require("../../schemas/users");
 
 const router = express.Router();
@@ -18,6 +20,14 @@ router.post(
   "/register",
   validateBody(loginAndRegisterSchema),
   ctrlWrapper(register)
+);
+
+router.get("/verify/:verificationToken", ctrlWrapper(verifyEmail));
+
+router.get(
+  "/verify",
+  validateBody(verifySchema),
+  ctrlWrapper(resendVerifyEmail)
 );
 
 router.post("/login", validateBody(loginAndRegisterSchema), ctrlWrapper(login));
